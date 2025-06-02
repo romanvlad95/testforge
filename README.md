@@ -1,137 +1,77 @@
-# 🧪 TestForge
+# TestForge
 
-![Python](https://img.shields.io/badge/python-3.12+-blue)
-![License](https://img.shields.io/badge/license-MIT-green)
+TestForge is a lightweight Python tool that helps you generate, validate, and log CSV test cases against a defined schema. Designed to be flexible and easy to integrate into your automation pipelines.
 
-**TestForge** is a Python-powered CLI toolkit for generating and validating test cases based on CSV schemas.
-It’s built to automate QA processes, sanity checks, and input validation for CSV-based workflows — fast, clean, and real-world useful.
+## Features
 
----
+* Generate synthetic CSV files based on a defined schema
+* Validate CSV files for type correctness and header structure
+* Generate timestamped validation logs
+* Integrate with GitHub Actions CI/CD
 
-## 🚀 Features
+## Badges
 
-* ✅ Schema-driven CSV validation (type enforcement, required fields)
-* 🧬 Auto-generation of valid CSV test data
-* ⚠️ Catch invalid rows and log detailed error reports
-* 🧾 Custom JSON schema format for flexibility
-* 🧪 CLI support with `argparse` for single-file or batch runs
-* 📂 Organized output: logs, test cases, inputs
+![Python](https://img.shields.io/badge/python-3.11%2B-blue)
+![License](https://img.shields.io/github/license/romanvlad95/testforge)
+![CI](https://github.com/romanvlad95/testforge/actions/workflows/validate-csv.yml/badge.svg)
 
----
+## Directory Structure
 
-## 📦 Installation
+```
+.
+├── csv_inputs/              # External input CSVs for validation
+├── main.py                  # Main entry point (argparse CLI)
+├── reports/validation_logs/ # Validation result logs
+├── schema_definition.json   # Column names and types
+├── test_cases/
+│   ├── generated/           # Auto-generated test case files
+│   └── templates/           # Optional manual CSV templates
+├── utils/                   # Helper modules (generator, validator, reporter)
+└── requirements.txt
+```
+
+## Installation
 
 ```bash
-# Create a virtual environment (optional but recommended)
-python -m venv venv
+git clone https://github.com/romanvlad95/testforge.git
+cd testforge
+python3 -m venv venv
 source venv/bin/activate
-
-# Install dependencies
 pip install -r requirements.txt
 ```
 
----
+## Usage
 
-## 📁 Folder Structure
-
-```
-testforge/
-├── main.py                 # CLI entry point
-├── schema_definition.json  # Expected schema for CSVs
-├── test_cases/             # Auto-generated test CSVs
-│   ├── generated/
-│   └── templates/
-├── csv_inputs/             # Manually prepared CSVs
-├── reports/                # Output validation logs
-│   └── validation_logs/
-└── utils/                  # Generator, validator, logger
-    ├── csv_generator.py
-    ├── csv_validator.py
-    └── report_writer.py
-```
-
----
-
-## ⚙️ Usage
-
-### 🧪 Generate a Test CSV
+### Generate a test CSV:
 
 ```bash
 python utils/csv_generator.py
 ```
 
-Creates a new `test_case_XX.csv` file in `test_cases/generated/`.
+This will create a file like `test_case_01.csv` inside `test_cases/generated/`.
 
----
-
-### ✅ Validate the Latest File
+### Validate a test case:
 
 ```bash
-python main.py
+python main.py --file test_cases/generated/test_case_01.csv
 ```
 
-Or validate a specific one:
+Log will be written to `reports/validation_logs/validation_YYYY-MM-DD_HHMM.log`.
 
-```bash
-python main.py --file test_cases/generated/test_case_02.csv
+### Default Behavior:
+
+If no `--file` is passed, it defaults to `test_cases/generated/test_case_01.csv`.
+
+## GitHub Actions CI
+
+GitHub Actions automatically runs `main.py` on each push to validate a generated test case file.
+
+Workflow path:
+
+```
+.github/workflows/validate-csv.yml
 ```
 
----
+## License
 
-## 📷 Preview
-
-<img src="https://user-images.githubusercontent.com/your-id/testforge-demo.gif" width="700" alt="TestForge CLI Demo">
-
----
-
-## 📄 Schema Format
-
-```json
-{
-  "columns": [
-    { "name": "id", "type": "int" },
-    { "name": "username", "type": "str" },
-    { "name": "score", "type": "int" }
-  ]
-}
-```
-
-You can extend this schema in the future to support:
-
-* Required vs optional fields
-* Uniqueness constraints
-* Regex validation
-* Custom types
-
----
-
-## 🛠️ Tech Stack
-
-* Python 3.12+
-* `argparse`, `csv`, `json`
-* Fully standalone (no third-party libs required)
-
----
-
-## 📌 Roadmap
-
-* [ ] Invalid test case generator (edge cases)
-* [ ] Schema validator with field constraints
-* [ ] Rich CLI output with `colorama`
-* [ ] Pytest-based unit tests
-* [ ] Packaged as `pip`-installable CLI
-
----
-
-## 💡 Why TestForge?
-
-Because manually validating CSVs is boring and error-prone.
-TestForge makes it **repeatable**, **automated**, and **developer-friendly**.
-
----
-
-## 📜 License
-
-MIT — free to use, abuse, and fork.
-
----
+This project is licensed under the MIT License.
