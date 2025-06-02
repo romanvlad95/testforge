@@ -1,0 +1,31 @@
+name: Validate Test CSV
+
+on:
+  push:
+    paths:
+      - '**.py'
+      - 'test_cases/generated/**'
+      - 'schema_definition.json'
+      - '.github/workflows/**'
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v3
+
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.11
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+    - name: Run CSV validation
+      run: python main.py --file test_cases/generated/test_case_01.csv
