@@ -1,0 +1,7 @@
+{
+  "columns": [
+    { "name": "id", "type": "int" },
+    { "name": "username", "type": "str" },
+    { "name": "score", "type": "int" }
+  ]
+}
