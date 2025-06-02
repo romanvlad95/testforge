@@ -1,0 +1,28 @@
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environments
+.venv/
+venv/
+
+# IDE and OS specific
+*.DS_Store
+.idea/
+.vscode/
+
+# Project-specific
+*.log
+project_snapshot.txt
+gen_output.csv
+inferred_schema.json
+
+# Distribution / egg-info
+*.egg-info/
+dist/
+build/
+reports/validation_logs/
+test_cases/gen_output.csv
+testforge.egg-info/

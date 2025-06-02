@@ -1,0 +1,14 @@
+{
+  "columns": [
+    {
+      "name": "age",
+      "type": "int",
+      "constraints": { "min": 18, "max": 99 }
+    },
+    {
+      "name": "email",
+      "type": "str",
+      "constraints": { "regex": "^[^@]+@[^@]+\\.[^@]+$" }
+    }
+  ]
+}

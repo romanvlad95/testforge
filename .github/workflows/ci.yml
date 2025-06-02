@@ -1,0 +1,57 @@
+name: Validate CSVs and Run Tests
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '**.py'
+      - 'pyproject.toml'
+      - 'test_cases/**'
+      - 'schema_definition*.json'
+      - '.github/workflows/**'
+  pull_request:
+
+jobs:
+  test-and-validate:
+    name: Full Test + CLI Validation
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+
+      - name: Install TestForge and dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e .[dev]
+          pip install ruff black mypy types-colorama
+
+      - name: Run pytest suite
+        run: pytest --cov=src/testforge --cov=tests -v
+
+      - name: Run Ruff linting
+        run: |
+          python -m ruff format .
+          python -m ruff check . --fix
+          python -m ruff check .
+
+      - name: Run Black formatting check
+        run: python -m black --check .
+
+      - name: Run Mypy type checking
+        run: python -m mypy --package testforge
+
+      - name: Check CLI help entrypoints
+        run: |
+          testforge validate --help
+          testforge generate --help
+          testforge schema --help
+          testforge batch --help
+
+      - name: Validate known good CSV
+        run: testforge validate tests/test_case_data/ci_clean.csv --schema examples/schema_definition.json

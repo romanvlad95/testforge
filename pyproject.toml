@@ -1,0 +1,97 @@
+[project]
+name = "testforge"
+description = "CSV test and validation CLI"
+readme = "README.md"
+requires-python = ">=3.8"
+license = "MIT"
+authors = [
+  { name = "Vlad Romaliyskiy", email = "romaliiskii.v@gmail.com" }
+]
+keywords = ["csv", "validation", "schema", "cli", "testing"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Quality Assurance",
+    "Topic :: Utilities",
+]
+dependencies = [
+  "colorama",
+  "pyfiglet"
+]
+dynamic = ["version"]
+
+
+
+[tool.setuptools.dynamic]
+version = {attr = "testforge.version.__version__"}
+
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
+
+# ADDED: This tells setuptools that your package ('testforge') is inside the 'src' directory
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+# CORRECTED: This replaces the old 'include' directive
+[tool.setuptools.packages.find]
+where = ["src"]
+
+
+# CORRECTED: This tells pytest-cov to measure coverage on the new source directory
+[tool.coverage.run]
+source = ["src/testforge"]
+
+[tool.ruff]
+line-length = 88
+exclude = [".venv", ".git"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
+
+[tool.black]
+line-length = 88
+
+[tool.mypy]
+strict = true
+exclude = [".github"]
+
+
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pytest-cov",
+    "ruff",
+    "black",
+    "mypy",
+    "bumpversion",
+    "build",
+    "pre-commit",
+    "types-colorama",
+]
+
+[project.scripts]
+testforge = "testforge.cli.__main__:main"
+
+[tool.bumpversion]
+current_version = "0.1.0"
+commit = true
+tag = true
+
+[[tool.bumpversion.files]]
+filepath = "src/testforge/version.py"
+search = "__version__ = \"{current_version}\""
+replace = "__version__ = \"{new_version}\""
+
+[[tool.bumpversion.files]]
+filepath = "pyproject.toml"
+search = "current_version = \"{current_version}\""
+replace = "current_version = \"{new_version}\""
