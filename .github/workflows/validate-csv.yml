@@ -13,9 +13,6 @@ jobs:
   validate:
     runs-on: ubuntu-latest
 
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
     steps:
     - name: Checkout repo
       uses: actions/checkout@v3
@@ -24,6 +21,10 @@ jobs:
       uses: actions/setup-python@v4
       with:
         python-version: 3.11
+
+    - name: Configure Git for pip auth
+      run: |
+        git config --global url."https://${{ secrets.GITHUB_TOKEN }}@github.com/".insteadOf "https://github.com/"
 
     - name: Install dependencies
       run: |
