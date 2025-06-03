@@ -4,5 +4,4 @@ pluggy==1.6.0
 Pygments==2.19.1
 pytest==8.4.0
 setuptools==80.9.0
-git+https://${GITHUB_TOKEN}@github.com/romanvlad95/testforge.git@main#egg=testforge
 wheel==0.45.1
