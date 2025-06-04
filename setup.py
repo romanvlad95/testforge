@@ -6,7 +6,7 @@ setup(
     packages=find_packages(),
     entry_points={
         "console_scripts": [
-            "csv-validator=main:main",
+            "csv-validator=utils.main:main",
             "csv-generator=utils.csv_generator:cli",
             "schema-generator=utils.schema_generator:cli",
         ],
