@@ -1,0 +1,43 @@
+import json
+from utils.csv_validator import validate_csv
+
+def create_test_files(tmp_path, csv_content, schema_dict):
+    csv_path = tmp_path / "input.csv"
+    schema_path = tmp_path / "schema.json"
+
+    csv_path.write_text(csv_content)
+    schema_path.write_text(json.dumps(schema_dict))
+
+    return str(csv_path), str(schema_path)
+
+def test_empty_csv_file(tmp_path):
+    csv_content = ""
+    schema = {"columns": [{"name": "id", "type": "int"}]}
+    csv_path, schema_path = create_test_files(tmp_path, csv_content, schema)
+
+    errors = validate_csv(csv_path, schema_path)
+    assert any("Header mismatch" in e for e in errors)
+
+def test_extra_column(tmp_path):
+    csv_content = "id,name\n1,Alice"
+    schema = {"columns": [{"name": "id", "type": "int"}]}
+    csv_path, schema_path = create_test_files(tmp_path, csv_content, schema)
+
+    errors = validate_csv(csv_path, schema_path)
+    assert "Header mismatch" in errors[0]
+
+def test_wrong_type_int(tmp_path):
+    csv_content = "id\nnot_an_int"
+    schema = {"columns": [{"name": "id", "type": "int"}]}
+    csv_path, schema_path = create_test_files(tmp_path, csv_content, schema)
+
+    errors = validate_csv(csv_path, schema_path)
+    assert "expected int" in errors[0]
+
+def test_valid_csv(tmp_path):
+    csv_content = "id\n42"
+    schema = {"columns": [{"name": "id", "type": "int"}]}
+    csv_path, schema_path = create_test_files(tmp_path, csv_content, schema)
+
+    errors = validate_csv(csv_path, schema_path)
+    assert not errors

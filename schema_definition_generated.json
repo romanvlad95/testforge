@@ -1,0 +1,14 @@
+[
+    {
+        "name": "id",
+        "type": "int"
+    },
+    {
+        "name": "username",
+        "type": "string"
+    },
+    {
+        "name": "score",
+        "type": "int"
+    }
+]

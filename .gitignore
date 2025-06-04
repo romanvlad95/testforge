@@ -1,15 +1,22 @@
-# Python
+# Python cache
 __pycache__/
-*.py[cod]
-*.egg-info/
+*.pyc
+
+# Virtual environments
+.venv/
 venv/
 
-# Logs
-*.log
-
-# IDE
-.vscode/
+# IDE and OS specific
+*.DS_Store
 .idea/
+.vscode/
 
-# macOS
-.DS_Store
+# Project-specific
+*.log
+project_snapshot.txt
+utils/extract_project_code.py
+
+# Distribution / egg-info
+*.egg-info/
+dist/
+build/

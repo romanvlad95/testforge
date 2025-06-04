@@ -1,9 +1,9 @@
 import json
 from utils.csv_validator import validate_csv
 
-def test_validator_with_valid_data(tmp_path):
-    csv_file = tmp_path / "valid.csv"
-    csv_file.write_text("name,age\nAlice,30")
+def test_csv_with_missing_column(tmp_path):
+    csv_file = tmp_path / "bad.csv"
+    csv_file.write_text("name\nAlice\nBob")
 
     schema = {
         "columns": [
@@ -15,4 +15,4 @@ def test_validator_with_valid_data(tmp_path):
     schema_file.write_text(json.dumps(schema))
 
     errors = validate_csv(str(csv_file), str(schema_file))
-    assert not errors
+    assert any("Missing field 'age'" in e for e in errors)

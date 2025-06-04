@@ -1,16 +1,18 @@
-from datetime import datetime
 from pathlib import Path
 
 LOG_DIR = Path("reports/validation_logs")
 LOG_DIR.mkdir(parents=True, exist_ok=True)
 
-def write_log(errors, filename):
-    timestamp = datetime.now().strftime("%Y-%m-%d_%H%M")
-    log_filename = f"validation_{timestamp}.log"
-    log_path = LOG_DIR / log_filename
+def write_validation_report(output_file, errors):
+    """
+    Writes validation results to the specified log file.
 
-    with open(log_path, "w") as f:
-        f.write(f"Validation Report for {filename}\n")
+    Parameters:
+        output_file (Path): Full path to the output log file.
+        errors (list[str]): List of validation error messages.
+    """
+    with open(output_file, "w") as f:
+        f.write(f"Validation Report\n")
         f.write("=" * 40 + "\n\n")
 
         if errors:
@@ -19,4 +21,4 @@ def write_log(errors, filename):
         else:
             f.write("No issues found.\n")
 
-    print(f"📄 Report written to: {log_path}")
+    print(f"📄 Report written to: {output_file}")
