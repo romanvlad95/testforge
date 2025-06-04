@@ -28,5 +28,12 @@ jobs:
         python -m pip install --upgrade pip
         pip install -e .
 
+    - name: Check CLI entrypoints
+      run: |
+        echo "🧪 Testing CLI tools..."
+        csv-validator --help
+        csv-generator --help
+        schema-generator --help
+
     - name: Run CSV validation
       run: csv-validator test_cases/test_case_01.csv
