@@ -1,7 +1,19 @@
 {
   "columns": [
-    { "name": "id", "type": "int" },
-    { "name": "username", "type": "str" },
-    { "name": "score", "type": "int" }
+    {
+      "name": "age",
+      "type": "int",
+      "constraints": {
+        "min": 18,
+        "max": 99
+      }
+    },
+    {
+      "name": "email",
+      "type": "string",
+      "constraints": {
+        "regex": "^[\\w\\.-]+@[\\w\\.-]+\\.\\w{2,}$"
+      }
+    }
   ]
 }

@@ -25,7 +25,8 @@ def validate_csv(csv_path: str | Path, schema_path: str | Path) -> list[str]:
                 field = col["name"]
                 expected_type = col["type"]
                 value = row.get(field)
-
+                constraints = col.get("constraints", {})
+                # TODO: Add logic for min/max, regex, enum checks
                 if value is None:
                     errors.append(f"Row {i}: Missing field '{field}'")
                     continue
