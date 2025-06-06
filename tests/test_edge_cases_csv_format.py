@@ -56,3 +56,15 @@ def test_constraints_min_max_and_regex(tmp_path):
     assert any("below min" in e for e in errors)
     assert any("above max" in e for e in errors)
     assert sum("does not match pattern" in e for e in errors) == 3
+
+def test_enum_constraint(tmp_path):
+    csv_content = "color\nred\nblue\nyellow"
+    schema = {
+        "columns": [
+            {"name": "color", "type": "str", "constraints": {"enum": ["red", "blue", "green"]}}
+        ]
+    }
+    csv_path, schema_path = create_test_files(tmp_path, csv_content, schema)
+    errors = validate_csv(csv_path, schema_path)
+    assert len(errors) == 1
+    assert "not in allowed values" in errors[0]

@@ -4,6 +4,7 @@ from pathlib import Path
 
 from utils.csv_validator import validate_csv
 from utils.report_writer import write_validation_report
+from utils.report_writer import generate_markdown_report
 
 VERSION = "1.0.0"
 
@@ -15,6 +16,16 @@ def parse_args():
         "csv_file",
         type=Path,
         help="Path to the CSV file to validate."
+    )
+    parser.add_argument(
+        "--markdown",
+        action="store_true",
+        help="Also generate a markdown version of the validation report"
+    )
+    parser.add_argument(
+        "--html",
+        action="store_true",
+        help="Also generate an HTML version of the validation report"
     )
     parser.add_argument(
         "--schema",
@@ -57,6 +68,25 @@ def main():
     output_file = output_dir / f"validation_{timestamp}.log"
 
     write_validation_report(output_file, errors)
+
+    if args.markdown:
+        md_str = generate_markdown_report(errors)
+        md_path = output_file.with_suffix(".md")
+        with open(md_path, "w") as f:
+            f.write(md_str)
+        print(f"📝 Markdown report saved to: {md_path}")
+
+    if args.html:
+        md_str = generate_markdown_report(errors)
+        html_path = output_file.with_suffix(".html")
+        html_str = (
+                "<html><head><title>Validation Report</title></head><body>\n"
+                + md_str.replace("\n", "<br>").replace("## ", "<h2>").replace("# ", "<h1>")
+                + "\n</body></html>"
+        )
+        with open(html_path, "w") as f:
+            f.write(html_str)
+        print(f"🌐 HTML report saved to: {html_path}")
 
     if errors:
         print(f"❗ Found {len(errors)} error(s). See report: {output_file}")

@@ -61,4 +61,7 @@ def validate_csv(csv_path: str | Path, schema_path: str | Path) -> list[str]:
                     if not re.match(constraints["regex"], value):
                         errors.append(f"Row {i}: Field '{field}' does not match pattern")
 
+                # Enum check (after type is valid)
+                if "enum" in constraints and value not in constraints["enum"]:
+                    errors.append(f"Row {i}: Field '{field}' not in allowed values: {constraints['enum']}")
     return errors

@@ -1,0 +1,11 @@
+{
+  "columns": [
+    {
+      "name": "color",
+      "type": "str",
+      "constraints": {
+        "enum": ["red", "blue", "green"]
+      }
+    }
+  ]
+}
