@@ -20,5 +20,15 @@ def write_validation_report(output_file, errors):
                 f.write(f"{err}\n")
         else:
             f.write("No issues found.\n")
-
     print(f"📄 Report written to: {output_file}")
+
+def generate_markdown_report(errors: list[str]) -> str:
+    md = "# Validation Report\n\n"
+    if errors:
+        md += "## Errors:\n"
+        for e in errors:
+            md += f"- {e}\n"
+    else:
+        md += "✅ No errors found.\n"
+    return md
+

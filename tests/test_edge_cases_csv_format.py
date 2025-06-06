@@ -41,3 +41,18 @@ def test_valid_csv(tmp_path):
 
     errors = validate_csv(csv_path, schema_path)
     assert not errors
+
+def test_constraints_min_max_and_regex(tmp_path):
+    csv_content = "age,email\n17,not-an-email\n120,good@bad\n42,wrong_format"
+    schema = {
+        "columns": [
+            {"name": "age", "type": "int", "constraints": {"min": 18, "max": 99}},
+            {"name": "email", "type": "str", "constraints": {"regex": r"^[^@]+@[^@]+\.[^@]+$"}}
+        ]
+    }
+    csv_path, schema_path = create_test_files(tmp_path, csv_content, schema)
+    errors = validate_csv(csv_path, schema_path)
+    assert len(errors) == 5
+    assert any("below min" in e for e in errors)
+    assert any("above max" in e for e in errors)
+    assert sum("does not match pattern" in e for e in errors) == 3
