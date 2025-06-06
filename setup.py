@@ -9,6 +9,7 @@ setup(
             "csv-validator=utils.main:main",
             "csv-generator=utils.csv_generator:cli",
             "schema-generator=utils.schema_generator:cli",
+            "csv-tester=utils.csv_tester:cli",
         ],
     },
 )
