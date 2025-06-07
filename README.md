@@ -4,6 +4,7 @@
 ![Tests](https://img.shields.io/badge/tests-passing-brightgreen)
 ![License](https://img.shields.io/badge/license-MIT-blue)
 ![Version](https://img.shields.io/badge/version-0.1.0-yellow)
+![CI](https://github.com/romanvlad95/testforge/actions/workflows/validate-csv.yml/badge.svg)
 
 TestForge is a lightweight Python CLI toolkit for generating, validating, and managing synthetic CSV datasets. Built to streamline testing and automation workflows, it enables fast schema inference, data validation, and batch reporting — all via terminal.
 
