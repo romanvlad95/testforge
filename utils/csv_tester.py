@@ -16,23 +16,36 @@ def validate_batch(csv_dir: Path, schema_file: Path, output_dir: Path):
     return results
 
 def cli():
-    parser = argparse.ArgumentParser(description="Batch CSV Validator (CSV Tester)")
-    parser.add_argument("csv_dir", type=Path, help="Folder containing CSV files to validate")
+    parser = argparse.ArgumentParser(
+        description="📦 Validate a batch of CSV files in a folder against a single JSON schema."
+    )
+    parser.add_argument(
+        "csv_dir",
+        type=Path,
+        help="Directory containing CSV files to validate."
+    )
     parser.add_argument(
         "--schema",
         type=Path,
         default=Path(__file__).resolve().parent.parent / "schema_definition.json",
-        help="Schema JSON to validate against"
+        help="Path to the schema JSON file (default: schema_definition.json)."
     )
     parser.add_argument(
         "--output",
         type=Path,
         default=Path(__file__).resolve().parent.parent / "reports" / "validation_logs",
-        help="Output directory for logs"
+        help="Directory to save validation logs (default: reports/validation_logs/)."
     )
 
     args = parser.parse_args()
     args.output.mkdir(parents=True, exist_ok=True)
+
+    if not args.csv_dir.exists():
+        print(f"❌ CSV directory not found: {args.csv_dir}")
+        return
+    if not args.schema.exists():
+        print(f"❌ Schema file not found: {args.schema}")
+        return
 
     print(f"📂 Validating all CSVs in: {args.csv_dir}")
     results = validate_batch(args.csv_dir, args.schema, args.output)

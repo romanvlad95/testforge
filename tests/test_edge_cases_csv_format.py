@@ -68,3 +68,40 @@ def test_enum_constraint(tmp_path):
     errors = validate_csv(csv_path, schema_path)
     assert len(errors) == 1
     assert "not in allowed values" in errors[0]
+
+def test_enum_with_empty_string(tmp_path):
+    csv_content = "color\nred\n\"\"\nblue"
+    schema = {
+        "columns": [
+            {"name": "color", "type": "str", "constraints": {"enum": ["red", "blue", "green"]}}
+        ]
+    }
+    csv_path, schema_path = create_test_files(tmp_path, csv_content, schema)
+    errors = validate_csv(csv_path, schema_path)
+    assert len(errors) == 2
+    assert any("empty string" in e for e in errors)
+    assert any("not in allowed values" in e for e in errors)
+
+def test_missing_field_with_regex(tmp_path):
+    csv_content = "email\njohn@example.com\n"
+    schema = {
+        "columns": [
+            {"name": "email", "type": "str", "constraints": {"regex": r"^[^@]+@[^@]+\.[^@]+$"}},
+            {"name": "username", "type": "str", "constraints": {"regex": r"^\w+$"}}
+        ]
+    }
+    csv_path, schema_path = create_test_files(tmp_path, csv_content, schema)
+    errors = validate_csv(csv_path, schema_path)
+    assert any("Missing field 'username'" in e for e in errors)
+
+def test_csv_with_extra_valid_columns(tmp_path):
+    csv_content = "id,name,extra\n1,Alice,surplus"
+    schema = {
+        "columns": [
+            {"name": "id", "type": "int"},
+            {"name": "name", "type": "str"}
+        ]
+    }
+    csv_path, schema_path = create_test_files(tmp_path, csv_content, schema)
+    errors = validate_csv(csv_path, schema_path)
+    assert any("Header mismatch" in e for e in errors)

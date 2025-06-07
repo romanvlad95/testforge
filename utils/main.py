@@ -10,22 +10,12 @@ VERSION = "1.0.0"
 
 def parse_args():
     parser = argparse.ArgumentParser(
-        description="🧪 CSV Validator: Validate CSV files against a JSON schema."
+        description="🧪 Validate a CSV file against a JSON schema with support for constraints, Markdown, and HTML reporting."
     )
     parser.add_argument(
         "csv_file",
         type=Path,
         help="Path to the CSV file to validate."
-    )
-    parser.add_argument(
-        "--markdown",
-        action="store_true",
-        help="Also generate a markdown version of the validation report"
-    )
-    parser.add_argument(
-        "--html",
-        action="store_true",
-        help="Also generate an HTML version of the validation report"
     )
     parser.add_argument(
         "--schema",
@@ -37,7 +27,22 @@ def parse_args():
         "--output",
         type=Path,
         default=Path(__file__).resolve().parent.parent / "reports" / "validation_logs",
-        help="Directory to save the validation log (default: reports/validation_logs)."
+        help="Directory to save the validation log (default: reports/validation_logs/)."
+    )
+    parser.add_argument(
+        "--markdown",
+        action="store_true",
+        help="Also generate a Markdown (.md) version of the validation report."
+    )
+    parser.add_argument(
+        "--html",
+        action="store_true",
+        help="Also generate an HTML (.html) version of the validation report."
+    )
+    parser.add_argument(
+        "--fail-fast",
+        action="store_true",
+        help="(Placeholder) Stop at first validation error (not yet implemented)."
     )
     parser.add_argument(
         "--version",

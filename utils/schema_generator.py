@@ -40,13 +40,37 @@ def infer_schema(csv_path: Path, sample_size=10):
     return schema
 
 def cli():
-    parser = argparse.ArgumentParser(description="Infer JSON schema from a sample CSV file.")
-    parser.add_argument("csv_file", type=Path, help="Path to the CSV file to infer schema from.")
-    parser.add_argument("output_file", type=Path, help="Path to save the generated schema JSON.")
-    parser.add_argument("--rows", type=int, default=10, help="Number of rows to sample (default: 10)")
+    parser = argparse.ArgumentParser(
+        description="📄 Infer a JSON schema from a sample CSV file."
+    )
+    parser.add_argument(
+        "csv_file",
+        type=Path,
+        help="Path to the CSV file to infer schema from."
+    )
+    parser.add_argument(
+        "output_file",
+        type=Path,
+        help="Path to save the generated schema JSON."
+    )
+    parser.add_argument(
+        "--rows",
+        type=int,
+        default=10,
+        help="Number of rows to sample (default: 10)."
+    )
     args = parser.parse_args()
 
-    schema = infer_schema(args.csv_file, args.rows)
+    if not args.csv_file.exists():
+        print(f"❌ CSV file not found: {args.csv_file}")
+        return
+
+    try:
+        schema = infer_schema(args.csv_file, args.rows)
+    except Exception as e:
+        print(f"❌ Failed to infer schema: {e}")
+        return
+
     with open(args.output_file, "w") as f:
         json.dump(schema, f, indent=4)
 

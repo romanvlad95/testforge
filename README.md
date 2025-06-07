@@ -1,5 +1,10 @@
 # 🔪 TestForge
 
+![Python](https://img.shields.io/badge/Python-3.11+-blue)
+![Tests](https://img.shields.io/badge/tests-passing-brightgreen)
+![License](https://img.shields.io/badge/license-MIT-blue)
+![Version](https://img.shields.io/badge/version-0.1.0-yellow)
+
 TestForge is a lightweight Python CLI toolkit for generating, validating, and managing synthetic CSV datasets. Built to streamline testing and automation workflows, it enables fast schema inference, data validation, and batch reporting — all via terminal.
 
 ---
@@ -65,7 +70,7 @@ csv-generator test_cases/templates/template.csv output.csv --rows 25
 ```bash
 schema-generator sample.csv inferred_schema.json
 ```
-
+<!-- TODO: Add demo GIF here -->
 ---
 
 ## 🤪 Schema Example
@@ -80,6 +85,20 @@ schema-generator sample.csv inferred_schema.json
 }
 ```
 
+
+---
+### 📐 JSON Schema Format
+
+Each schema defines an array of `columns`, with optional constraints:
+
+```json
+{
+  "columns": [
+    {"name": "age", "type": "int", "constraints": {"min": 18, "max": 99}},
+    {"name": "email", "type": "str", "constraints": {"regex": "^[^@]+@[^@]+\\.[^@]+$"}},
+    {"name": "color", "type": "str", "constraints": {"enum": ["red", "blue", "green"]}}
+  ]
+}
 ---
 
 ## 📆 Output

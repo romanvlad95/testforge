@@ -1,5 +1,6 @@
 import csv
 import json
+import re
 from pathlib import Path
 
 
@@ -24,27 +25,29 @@ def validate_csv(csv_path: str | Path, schema_path: str | Path) -> list[str]:
             for col in schema["columns"]:
                 field = col["name"]
                 expected_type = col["type"]
-                value = row.get(field)
+                constraints = col.get("constraints", {})
 
-                # Check if field is missing
-                if value is None:
+                # Check if the field is completely missing from the row
+                if field not in row:
                     errors.append(f"Row {i}: Missing field '{field}'")
                     continue
+
+                # Get value and normalize
+                value = row.get(field, "")
+                if value is None:
+                    value = ""
+
+                # Empty string check
+                if expected_type == "str" and value.strip() == "":
+                    errors.append(f"Row {i}: Field '{field}' is an empty string")
 
                 # Type validation
                 if expected_type == "int":
                     if not value.isdigit():
                         errors.append(f"Row {i}: Field '{field}' expected int but got '{value}'")
-                        continue  # Don't run constraints if type is wrong
-                elif expected_type == "str":
-                    if value.strip() == "":
-                        errors.append(f"Row {i}: Field '{field}' is an empty string")
-                        continue
+                        continue  # skip constraints if type is wrong
 
-                # Load constraints only after passing type checks
-                constraints = col.get("constraints", {})
-
-                # Numeric range check
+                # Min/max for numeric fields
                 if expected_type in ["int", "float"]:
                     try:
                         val = float(value)
@@ -53,15 +56,15 @@ def validate_csv(csv_path: str | Path, schema_path: str | Path) -> list[str]:
                         if "max" in constraints and val > constraints["max"]:
                             errors.append(f"Row {i}: Field '{field}' above max {constraints['max']}")
                     except ValueError:
-                        pass  # Already handled in type check
+                        pass  # Already handled above
 
-                # Regex pattern check
+                # Regex check
                 if expected_type == "str" and "regex" in constraints:
-                    import re
                     if not re.match(constraints["regex"], value):
                         errors.append(f"Row {i}: Field '{field}' does not match pattern")
 
-                # Enum check (after type is valid)
+                # Enum check
                 if "enum" in constraints and value not in constraints["enum"]:
                     errors.append(f"Row {i}: Field '{field}' not in allowed values: {constraints['enum']}")
+
     return errors

@@ -33,10 +33,29 @@ def generate_csv(template_path: Path, output_path: Path, rows: int):
     print(f"✅ Generated CSV at: {output_path} with {rows} rows.")
 
 def cli():
-    parser = argparse.ArgumentParser(description="Generate dummy CSV data from template headers.")
-    parser.add_argument("template", type=Path, help="CSV template with headers.")
-    parser.add_argument("output", type=Path, help="Output path for the generated CSV.")
-    parser.add_argument("--rows", type=int, default=10, help="Number of rows to generate (default: 10)")
+    parser = argparse.ArgumentParser(
+        description="🛠 Generate dummy CSV data from a template file with headers."
+    )
+    parser.add_argument(
+        "template",
+        type=Path,
+        help="Path to the CSV template with headers."
+    )
+    parser.add_argument(
+        "output",
+        type=Path,
+        help="Output path for the generated CSV."
+    )
+    parser.add_argument(
+        "--rows",
+        type=int,
+        default=10,
+        help="Number of rows to generate (default: 10)."
+    )
     args = parser.parse_args()
+
+    if not args.template.exists():
+        print(f"❌ Template file not found: {args.template}")
+        return
 
     generate_csv(args.template, args.output, args.rows)
