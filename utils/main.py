@@ -1,4 +1,17 @@
+# MIT License
+# Copyright (c) 2025 Vlad
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND...
+
 import argparse
+import sys
 from datetime import datetime
 from pathlib import Path
 
@@ -60,10 +73,10 @@ def main():
 
     if not csv_file.exists():
         print(f"❌ CSV file not found: {csv_file}")
-        return
+        sys.exit(1)
     if not schema_file.exists():
         print(f"❌ Schema file not found: {schema_file}")
-        return
+        sys.exit(1)
 
     print(f"🔍 Validating '{csv_file}' using schema '{schema_file}'...")
     errors = validate_csv(csv_file, schema_file)

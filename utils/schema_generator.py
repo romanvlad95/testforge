@@ -1,3 +1,15 @@
+# MIT License
+# Copyright (c) 2025 Vlad
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND...
+
 import argparse
 import csv
 import json
@@ -21,11 +33,10 @@ def infer_type(value):
 def infer_schema(csv_path: Path, sample_size=10):
     with open(csv_path, newline='') as f:
         reader = csv.DictReader(f)
+        headers = reader.fieldnames  # Moved up before reading rows
+        if not headers:
+            raise ValueError("CSV has no headers.")
         sample_rows = [row for _, row in zip(range(sample_size), reader)]
-
-    headers = reader.fieldnames
-    if not headers:
-        raise ValueError("CSV has no headers.")
 
     schema = []
     for header in headers:

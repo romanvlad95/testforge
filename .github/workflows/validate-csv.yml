@@ -11,7 +11,29 @@ on:
   pull_request:
 
 jobs:
+  sanity-check:
+    name: 🧪 Setup & Sanity Check (clean venv)
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🧾 Checkout repo
+        uses: actions/checkout@v3
+
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+
+      - name: 🧼 Clean install in fresh venv
+        run: |
+          python -m venv .venv_test
+          source .venv_test/bin/activate
+          pip install --upgrade pip
+          pip install -e .
+          pip install -r requirements.txt
+          pytest
+
   test-and-validate:
+    needs: sanity-check
     runs-on: ubuntu-latest
 
     steps:

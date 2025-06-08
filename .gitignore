@@ -22,3 +22,5 @@ utils/extract_project_code.py
 *.egg-info/
 dist/
 build/
+reports/validation_logs/
+test_cases/gen_output.csv
