@@ -1,6 +1,15 @@
+[project]
+name = "testforge"
+version = "0.1.0"
+description = "CSV test and validation CLI"
+dependencies = [
+    "colorama"
+]
+
 [build-system]
 requires = ["setuptools>=42"]
 build-backend = "setuptools.build_meta"
+
 [tool.coverage.run]
 omit = [
     "utils/extract_project_code.py"
