@@ -11,8 +11,10 @@
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND...
 
 from pathlib import Path
+from colorama import init, Fore
+init(autoreset=True)
 
-LOG_DIR = Path("reports/validation_logs")
+LOG_DIR = Path(__file__).resolve().parent.parent / "reports" / "validation_logs"
 LOG_DIR.mkdir(parents=True, exist_ok=True)
 
 def write_validation_report(output_file, errors):
@@ -32,7 +34,10 @@ def write_validation_report(output_file, errors):
                 f.write(f"{err}\n")
         else:
             f.write("No issues found.\n")
-    print(f"📄 Report written to: {output_file}")
+    if errors:
+        print(Fore.RED + f"❗ Found {len(errors)} error(s). See report: {output_file}")
+    else:
+        print(Fore.GREEN + f"✅ No issues found. Report saved to: {output_file}")
 
 def generate_markdown_report(errors: list[str]) -> str:
     md = "# Validation Report\n\n"

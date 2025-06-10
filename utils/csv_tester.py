@@ -12,6 +12,7 @@
 
 import argparse
 from pathlib import Path
+from colorama import Fore, Style
 from utils.csv_validator import validate_csv
 from utils.report_writer import write_validation_report
 
@@ -53,10 +54,10 @@ def cli():
     args.output.mkdir(parents=True, exist_ok=True)
 
     if not args.csv_dir.exists():
-        print(f"❌ CSV directory not found: {args.csv_dir}")
+        print(Fore.RED + f"❌ CSV directory not found: {args.csv_dir}")
         return
     if not args.schema.exists():
-        print(f"❌ Schema file not found: {args.schema}")
+        print(Fore.RED + f"❌ Schema file not found: {args.schema}")
         return
 
     print(f"📂 Validating all CSVs in: {args.csv_dir}")
@@ -64,5 +65,8 @@ def cli():
 
     print("\n🧪 Validation Summary:")
     for name, error_count in results:
-        status = "✅" if error_count == 0 else f"❌ {error_count} error(s)"
+        if error_count == 0:
+            status = Fore.GREEN + "✅ 0 errors"
+        else:
+            status = Fore.RED + f"❌ {error_count} error(s)"
         print(f"- {name}: {status}")
