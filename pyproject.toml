@@ -1,16 +1,26 @@
 [project]
 name = "testforge"
-version = "0.1.0"
+version = "1.0.0"
 description = "CSV test and validation CLI"
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "MIT" }
+authors = [
+  { name = "Vlad Romaliyskiy", email = "romaliiskii.v@gmail.com" }
+]
 dependencies = [
-    "colorama"
+  "colorama"
 ]
 
+[project.scripts]
+csv-validator = "utils.main:main"
+csv-generator = "utils.csv_generator:cli"
+schema-generator = "utils.schema_generator:cli"
+csv-tester = "utils.csv_tester:cli"
+
 [build-system]
-requires = ["setuptools>=42"]
+requires = ["setuptools>=64", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [tool.coverage.run]
-omit = [
-    "utils/extract_project_code.py"
-]
+omit = ["utils/extract_project_code.py"]
