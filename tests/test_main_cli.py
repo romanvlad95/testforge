@@ -79,7 +79,7 @@ def test_invalid_csv(tmp_path):
         "--schema", str(schema_path)
     ])
 
-    assert code == 0
+    assert code == 1, f"Expected CLI to fail due to invalid CSV, but got exit code {code}\nstdout:\n{out}\nstderr:\n{err}"
 
     # Strip emoji and get proper file path
     log_path = None
