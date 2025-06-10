@@ -7,3 +7,5 @@ pytest==8.4.0
 pytest-cov==6.1.1
 setuptools==80.9.0
 wheel==0.45.1
+colorama
+colorama==0.4.6
