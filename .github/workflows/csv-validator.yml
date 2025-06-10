@@ -5,6 +5,7 @@ on:
   push:
     paths:
       - '**.py'
+      - 'pyproject.toml'
       - 'test_cases/**'
       - 'schema_definition*.json'
       - '.github/workflows/**'
