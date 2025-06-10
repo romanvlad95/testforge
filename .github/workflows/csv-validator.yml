@@ -42,4 +42,4 @@ jobs:
           csv-tester --help
 
       - name: ✅ Validate known good CSV
-        run: csv-validator test_cases/test_case_01.csv --schema schema_definition.json
+        run: csv-validator test_cases/ci_clean.csv --schema schema_definition.json
