@@ -1,14 +1,5 @@
 # MIT License
 # Copyright (c) 2025 Vlad
-#
-# Permission is hereby granted, free of charge, to any person obtaining a copy
-# of this software and associated documentation files (the "Software"), to deal
-# in the Software without restriction, including without limitation the rights
-# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the Software is
-# furnished to do so, subject to the following conditions:
-#
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND...
 
 import argparse
 import sys
@@ -25,43 +16,15 @@ def parse_args():
     parser = argparse.ArgumentParser(
         description="🧪 Validate a CSV file against a JSON schema with support for constraints, Markdown, and HTML reporting."
     )
-    parser.add_argument(
-        "csv_file",
-        type=Path,
-        help="Path to the CSV file to validate."
-    )
-    parser.add_argument(
-        "--schema",
-        type=Path,
-        default=Path(__file__).resolve().parent.parent / "schema_definition.json",
-        help="Path to the schema JSON file (default: schema_definition.json)."
-    )
-    parser.add_argument(
-        "--output",
-        type=Path,
-        default=Path(__file__).resolve().parent.parent / "reports" / "validation_logs",
-        help="Directory to save the validation log (default: reports/validation_logs/)."
-    )
-    parser.add_argument(
-        "--markdown",
-        action="store_true",
-        help="Also generate a Markdown (.md) version of the validation report."
-    )
-    parser.add_argument(
-        "--html",
-        action="store_true",
-        help="Also generate an HTML (.html) version of the validation report."
-    )
-    parser.add_argument(
-        "--fail-fast",
-        action="store_true",
-        help="(Placeholder) Stop at first validation error (not yet implemented)."
-    )
-    parser.add_argument(
-        "--version",
-        action="version",
-        version=f"%(prog)s {VERSION}"
-    )
+    parser.add_argument("csv_file", type=Path, help="Path to the CSV file to validate.")
+    parser.add_argument("--schema", type=Path, default=Path(__file__).resolve().parent.parent / "schema_definition.json",
+                        help="Path to the schema JSON file (default: schema_definition.json).")
+    parser.add_argument("--output", type=Path, default=Path(__file__).resolve().parent.parent / "reports" / "validation_logs",
+                        help="Directory to save the validation log (default: reports/validation_logs/).")
+    parser.add_argument("--markdown", action="store_true", help="Also generate a Markdown (.md) version of the validation report.")
+    parser.add_argument("--html", action="store_true", help="Also generate an HTML (.html) version of the validation report.")
+    parser.add_argument("--fail-fast", action="store_true", help="(Placeholder) Stop at first validation error (not yet implemented).")
+    parser.add_argument("--version", action="version", version=f"%(prog)s {VERSION}")
     return parser.parse_args()
 
 def main():
@@ -86,6 +49,7 @@ def main():
     output_file = output_dir / f"validation_{timestamp}.log"
 
     write_validation_report(output_file, errors)
+    print(f"✅ Report written to: {output_file}")  # <-- test relies on this line
 
     if args.markdown:
         md_str = generate_markdown_report(errors)
@@ -98,18 +62,20 @@ def main():
         md_str = generate_markdown_report(errors)
         html_path = output_file.with_suffix(".html")
         html_str = (
-                "<html><head><title>Validation Report</title></head><body>\n"
-                + md_str.replace("\n", "<br>").replace("## ", "<h2>").replace("# ", "<h1>")
-                + "\n</body></html>"
+            "<html><head><title>Validation Report</title></head><body>\n"
+            + md_str.replace("\n", "<br>").replace("## ", "<h2>").replace("# ", "<h1>")
+            + "\n</body></html>"
         )
         with open(html_path, "w") as f:
             f.write(html_str)
         print(f"🌐 HTML report saved to: {html_path}")
 
     if errors:
-        print(f"❗ Found {len(errors)} error(s). See report: {output_file}")
+        print(f"❗ Found {len(errors)} error(s).")
+        sys.exit(1)
     else:
-        print(f"✅ CSV is valid! Report saved to: {output_file}")
+        print("✅ CSV is valid!")
+        sys.exit(0)
 
 if __name__ == "__main__":
     main()
