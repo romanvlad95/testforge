@@ -13,10 +13,10 @@ dependencies = [
 ]
 
 [project.scripts]
-csv-validator = "utils.main:main"
-csv-generator = "utils.csv_generator:cli"
-schema-generator = "utils.schema_generator:cli"
-csv-tester = "utils.csv_tester:cli"
+csv-validator = "utils.cli.main:main"
+csv-generator = "utils.devtools.generators.csv_generator:cli"
+schema-generator = "utils.core.schema:cli"
+csv-tester = "utils.devtools.batch_tests.batch_runner:cli"
 
 [build-system]
 requires = ["setuptools>=64", "wheel"]

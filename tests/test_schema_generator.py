@@ -1,7 +1,7 @@
 import csv
 import subprocess
 from pathlib import Path
-from utils import schema_generator
+from utils.core import schema as schema_generator
 
 def test_infer_schema_typing(tmp_path):
     csv_path = tmp_path / "mixed.csv"

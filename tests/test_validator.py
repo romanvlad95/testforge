@@ -1,7 +1,7 @@
 import csv
 import json
 from pathlib import Path
-from utils.csv_validator import validate_csv
+from utils.core.validator import validate_csv
 
 def write_schema(path: Path, columns: list[dict]):
     path.write_text(json.dumps({"columns": columns}, indent=2))

@@ -1,7 +1,7 @@
 import json
 import csv
 from pathlib import Path
-from utils import csv_tester
+from utils.devtools.batch_tests import batch_runner
 
 def test_validate_batch(tmp_path):
     # === Setup test files ===
@@ -30,7 +30,7 @@ def test_validate_batch(tmp_path):
         writer.writerow(["30"])
 
     # === Run the batch validation ===
-    results = csv_tester.validate_batch(csv_dir, schema_path, output_dir)
+    results = batch_runner.validate_batch(csv_dir, schema_path, output_dir)
 
     # === Assert logs are created ===
     valid_log = output_dir / "valid_validation.log"

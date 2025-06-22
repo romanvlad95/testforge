@@ -1,5 +1,5 @@
 import json
-from utils.csv_validator import validate_csv
+from utils.core.validator import validate_csv
 
 def test_csv_with_missing_column(tmp_path):
     csv_file = tmp_path / "bad.csv"

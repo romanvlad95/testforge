@@ -6,9 +6,9 @@ import sys
 from datetime import datetime
 from pathlib import Path
 
-from utils.csv_validator import validate_csv
-from utils.report_writer import write_validation_report
-from utils.report_writer import generate_markdown_report
+from utils.core.validator import validate_csv
+from utils.core.report import write_validation_report
+from utils.core.report import generate_markdown_report
 
 VERSION = "1.0.0"
 
@@ -71,11 +71,11 @@ def main():
         print(f"🌐 HTML report saved to: {html_path}")
 
     if errors:
-        print(f"❗ Found {len(errors)} error(s).")
+        print(f"❗ Found {len(errors)} error(s). See report: {output_file}")
         sys.exit(1)
     else:
         print("✅ CSV is valid!")
         sys.exit(0)
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

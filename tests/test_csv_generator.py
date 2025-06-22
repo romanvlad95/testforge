@@ -1,6 +1,6 @@
 import csv
 from pathlib import Path
-from utils import csv_generator
+from utils.devtools.generators import csv_generator
 
 def test_generate_csv(tmp_path):
     # Create a fake template CSV with common headers

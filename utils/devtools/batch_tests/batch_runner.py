@@ -13,8 +13,8 @@
 import argparse
 from pathlib import Path
 from colorama import Fore, Style
-from utils.csv_validator import validate_csv
-from utils.report_writer import write_validation_report
+from utils.core.validator import validate_csv
+from utils.core.report import write_validation_report
 
 def validate_batch(csv_dir: Path, schema_file: Path, output_dir: Path):
     csv_files = list(csv_dir.glob("*.csv"))

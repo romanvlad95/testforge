@@ -1,5 +1,5 @@
 import json
-from utils.csv_validator import validate_csv
+from utils.core.validator import validate_csv
 
 def create_test_files(tmp_path, csv_content, schema_dict):
     csv_path = tmp_path / "input.csv"

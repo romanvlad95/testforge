@@ -1,5 +1,5 @@
 from pathlib import Path
-from utils import report_writer
+from utils.core import report as report_writer
 
 def test_write_validation_report(tmp_path):
     output_file = tmp_path / "test_report.log"

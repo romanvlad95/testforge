@@ -16,7 +16,6 @@ venv/
 # Project-specific
 *.log
 project_snapshot.txt
-utils/extract_project_code.py
 
 # Distribution / egg-info
 *.egg-info/
@@ -24,3 +23,5 @@ dist/
 build/
 reports/validation_logs/
 test_cases/gen_output.csv
+testforge.egg-info/
+
